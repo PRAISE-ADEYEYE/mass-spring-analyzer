@@ -151,23 +151,77 @@ st.pyplot(plot_frequency_vs_mass(mass_range_2))
 
 
 # ------------------ MODULE 7 ------------------
-# 🔄 More modules to be added soon: energy analysis, damped systems, simulations...
+# 🔄 Energy Analysis, Damped Systems, Simulations
 
-def upcoming_modules():
-    st.markdown("""
-    ---
-    ### 🔄 Coming Soon
-    🚧 I am working on new modules including:
+st.header("🔋Energy Analysis")
 
-    - **Energy Analysis**: Explore kinetic & potential energy interactions  
-    - **Damped Systems**: Understand real-world damping effects  
-    - **Advanced Simulations**: Interactive animations & dynamic system behavior  
+st.subheader("Kinetic and Potential Energy")
 
-    Stay tuned for updates! 🚀
-    """)
+mass_for_energy = st.number_input("Enter mass for energy analysis (kg)", value=mass)
+spring_k = stiffness
+velocity = st.number_input("Enter velocity (m/s)", value=2.0)
+displacement = st.number_input("Enter displacement (m)", value=0.1)
 
+kinetic_energy = 0.5 * mass_for_energy * velocity ** 2
+potential_energy = 0.5 * spring_k * displacement ** 2
 
-upcoming_modules()
+st.success(f"Kinetic Energy (KE) = {kinetic_energy:.2f} Joules")
+st.success(f"Potential Energy (PE) = {potential_energy:.2f} Joules")
+
+# Plot KE and PE
+energy_labels = ['Kinetic Energy', 'Potential Energy']
+energy_values = [kinetic_energy, potential_energy]
+
+fig_energy, ax = plt.subplots()
+ax.bar(energy_labels, energy_values, color=['orange', 'cyan'])
+ax.set_title('Energy Distribution')
+ax.set_ylabel('Energy (Joules)')
+st.pyplot(fig_energy)
+
+# ------------------
+
+st.header("🌪️ Damped Systems (Light Introduction)")
+
+st.subheader("Underdamped Oscillation Example")
+
+c = st.number_input("Enter damping coefficient (Ns/m)", value=1.0)
+wn = np.sqrt(spring_k / mass_for_energy)  # Natural frequency
+wd = np.sqrt(wn**2 - (c / (2 * mass_for_energy))**2)  # Damped natural frequency
+
+st.success(f"Natural Frequency (undamped) ωₙ = {wn:.2f} rad/s")
+st.success(f"Damped Natural Frequency ω_d = {wd:.2f} rad/s")
+
+t = np.linspace(0, 10, 500)
+x = np.exp(-c * t / (2 * mass_for_energy)) * np.cos(wd * t)
+
+fig_damped, ax = plt.subplots()
+ax.plot(t, x, label="Damped Vibration", color='red')
+ax.set_title('Damped System Response')
+ax.set_xlabel('Time (s)')
+ax.set_ylabel('Amplitude')
+ax.grid(True)
+ax.legend()
+st.pyplot(fig_damped)
+
+# ------------------
+
+st.header("🎢 Simple Simulation of Mass-Spring Motion")
+
+st.subheader("Oscillating Motion Animation")
+
+amplitude = displacement
+omega = wn
+time_sim = np.linspace(0, 10, 300)
+position = amplitude * np.cos(omega * time_sim)
+
+fig_sim, ax = plt.subplots()
+ax.plot(time_sim, position, label="Simple Harmonic Motion", color='blue')
+ax.set_title('Mass-Spring Oscillation')
+ax.set_xlabel('Time (s)')
+ax.set_ylabel('Position (m)')
+ax.grid(True)
+ax.legend()
+st.pyplot(fig_sim)
 
 # ------------------ MODULE 8 ------------------
 # Footer
